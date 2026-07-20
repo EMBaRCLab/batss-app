@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
-import type { BatssRunInput, BatssRunResult } from '@/shared/batss-types'
+import type { BatssRunInput, BatssRunResult } from '@shared/batss-types'
 
 const requiredNumber = (label: string) =>
   v.pipe(
