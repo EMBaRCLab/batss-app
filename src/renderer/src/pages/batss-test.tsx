@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { JSX, useEffect, useRef, useState } from 'react'
 import { Form, Field as FormischField, useForm } from '@formisch/react'
 import type { SubmitHandler } from '@formisch/react'
 import * as v from 'valibot'
@@ -21,6 +21,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 
 import type { BatssRunInput, BatssRunResult } from '@shared/batss-types'
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const requiredNumber = (label: string) =>
   v.pipe(
     v.union([v.string(), v.number()]),
@@ -82,7 +83,7 @@ const primaryOutcomes = [
   }
 ]
 
-export default function BatssTest() {
+export default function BatssTest(): JSX.Element {
   const form = useForm({
     schema: designSchema,
     validate: 'blur',
@@ -282,7 +283,16 @@ export default function BatssTest() {
   )
 }
 
-function NumberInputField({ id, label, field }: { id: string; label: string; field: any }) {
+function NumberInputField({
+  id,
+  label,
+  field
+}: {
+  id: string
+  label: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  field: any
+}): JSX.Element {
   return (
     <ShadcnField data-invalid={field.errors !== null}>
       <FieldLabel>{label}</FieldLabel>
