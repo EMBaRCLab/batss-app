@@ -15,5 +15,17 @@ declare global {
       runExample: (input: BatssRunInput) => Promise<BatssRunResult>
       onLog: (callback: (line: string) => void) => () => void
     }
+    theme: {
+      get(): Promise<{
+        source: 'system' | 'light' | 'dark'
+        dark: boolean
+      }>
+
+      set(theme: 'system' | 'light' | 'dark'): Promise<void>
+
+      onUpdated(
+        callback: (theme: { source: 'system' | 'light' | 'dark'; dark: boolean }) => void
+      ): () => void
+    }
   }
 }

@@ -35,7 +35,10 @@ export class BatssService {
       # causes of "the inla-program exited with an error" with no
       # further detail. Forcing a single thread sidesteps that whole
       # class of failure.
-      inla.setOption(num.threads = "1:1")
+      # Docker only
+      if (file.exists("/.dockerenv")) {
+        inla.setOption(num.threads = "1:1")
+      }
 
       # logit is a helper function
       logit <- function(p) { log(p / (1 - p)) }
@@ -45,11 +48,13 @@ export class BatssService {
 
       trials <- batss.glm(
         model = y ~ group,
+        family = "binomial",
+        link = "logit",
         var = list(y = rbinom, group = alloc.balanced),
         var.control = list(y = list(size = 1)),
         prob0 = c(A = 1, B = 1),
         alternative = input$alternative,
-        beta = c(logit(input$probability), 0),
+        beta = c(logit(input$probability), input$logOdds),
         which = 2,
         eff.arm = eff.arm.simple,
         eff.arm.control = list(b = input$b),
@@ -58,21 +63,54 @@ export class BatssService {
         N = input$N,
         interim = list(recruited = list(m0 = input$m0, m = input$m)),
         R = input$R,
-        extended = 1,
+        extended = 2,
         computation = 'serial'
       )
 
-      # The exact shape of batss.glm()'s return value isn't something
-      # we've verified field-by-field (it varies with 'extended' and
-      # other options), so rather than guessing specific sub-fields and
-      # risking a wrong-field-name failure like before, serialize the
-      # whole result. force = TRUE tells jsonlite to fall back to a
-      # best-effort representation for any class it doesn't recognize
-      # instead of erroring.
+      summary1 <- summary(trials)
+
+      df <- rbind(
+        data.frame(
+          Scenario = "H0",
+          Outcome = summary1$H0$scenario$groupB,
+          Proportion = summary1$H0$scenario$overall
+        ),
+        data.frame(
+          Scenario = "H1",
+          Outcome = summary1$H1$scenario$groupB,
+          Proportion = summary1$H1$scenario$overall
+        )
+      )
+
+      df$Outcome <- factor(
+        df$Outcome,
+        levels = c(0, 1),
+        labels = c("Inconclusive", "B Superior")
+      )
+
+
+      # reshape to frontend table:
+      # Outcome | H0 proportions | H1 proportions
+
+      wide <- reshape(
+        df,
+        idvar = "Outcome",
+        timevar = "Scenario",
+        direction = "wide"
+      )
+
+      names(wide) <- c(
+        "Outcome",
+        "H0",
+        "H1"
+      )
+
+
       result <- list(
         status = "success",
         package = as.character(packageVersion("BATSS")),
-        data = trials
+        table = wide,
+        chart = df
       )
 
       cat(jsonlite::toJSON(result, auto_unbox = TRUE, force = TRUE, null = "null"))

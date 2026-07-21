@@ -58,6 +58,24 @@ const batss = {
   }
 }
 
+const theme = {
+  get: () => ipcRenderer.invoke('theme:get'),
+
+  set: (theme: 'system' | 'light' | 'dark') => ipcRenderer.invoke('theme:set', theme),
+
+  onUpdated: (
+    callback: (theme: { source: 'system' | 'light' | 'dark'; dark: boolean }) => void
+  ) => {
+    const listener = (_: Electron.IpcRendererEvent, payload: any) => callback(payload)
+
+    ipcRenderer.on('theme:updated', listener)
+
+    return () => {
+      ipcRenderer.removeListener('theme:updated', listener)
+    }
+  }
+}
+
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
@@ -67,6 +85,8 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('runtime', runtime)
 
     contextBridge.exposeInMainWorld('batss', batss)
+
+    contextBridge.exposeInMainWorld('theme', theme)
   } catch (error) {
     console.error(error)
   }
@@ -82,4 +102,7 @@ if (process.contextIsolated) {
 
   // @ts-ignore
   window.batss = batss
+
+  // @ts-ignore
+  window.theme = theme
 }

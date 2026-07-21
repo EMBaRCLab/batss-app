@@ -6,6 +6,7 @@ import { useNavigation } from '@/stores/navigation'
 import { useRuntime } from '@/stores/runtime'
 
 import { RuntimeScreen } from '@/components/runtime-screen'
+import { useTheme } from '@/stores/theme'
 
 export default function App() {
   const currentView = useNavigation((state) => state.currentView)
@@ -14,9 +15,16 @@ export default function App() {
 
   const initialize = useRuntime((state) => state.initialize)
 
+  const initializeTheme = useTheme((state) => state.initialize)
+
   useEffect(() => {
     initialize()
   }, [initialize])
+
+
+  useEffect(() => {
+    initializeTheme()
+  }, [initializeTheme])
 
   if (status !== 'ready') {
     return <RuntimeScreen />

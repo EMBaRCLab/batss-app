@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, screen } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, screen, nativeTheme } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
@@ -11,6 +11,10 @@ import { BatssRunInput } from '../shared/batss-types'
 
 let mainWindow: BrowserWindow | null = null
 
+if (process.platform === 'linux') {
+  app.commandLine.appendSwitch('ozone-platform', 'x11')
+}
+
 app.disableHardwareAcceleration()
 
 app.commandLine.appendSwitch('disable-gpu')
@@ -22,8 +26,6 @@ app.commandLine.appendSwitch('disable-software-rasterizer', 'false')
 app.commandLine.appendSwitch('use-gl', 'swiftshader')
 app.commandLine.appendSwitch('use-angle', 'swiftshader')
 app.commandLine.appendSwitch('enable-unsafe-swiftshader')
-
-app.commandLine.appendSwitch('in-process-gpu')
 
 const batssService = new BatssService()
 
@@ -88,9 +90,6 @@ function createWindow(): void {
   mainWindow.on('move', saveBounds)
 }
 
-console.log('Electron switches:', process.argv)
-console.log('disable-gpu:', app.commandLine.hasSwitch('disable-gpu'))
-
 app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.albatross')
 
@@ -112,6 +111,31 @@ app.whenReady().then(() => {
   })
 
   app.setName('albatross')
+
+  ipcMain.handle('theme:get', () => ({
+    source: nativeTheme.themeSource,
+    dark: nativeTheme.shouldUseDarkColors
+  }))
+
+  ipcMain.handle('theme:set', (_event, theme: 'system' | 'light' | 'dark') => {
+    nativeTheme.themeSource = theme
+
+    return {
+      source: nativeTheme.themeSource,
+      dark: nativeTheme.shouldUseDarkColors
+    }
+  })
+
+  nativeTheme.on('updated', () => {
+    const payload = {
+      source: nativeTheme.themeSource,
+      dark: nativeTheme.shouldUseDarkColors
+    }
+
+    for (const window of BrowserWindow.getAllWindows()) {
+      window.webContents.send('theme:updated', payload)
+    }
+  })
 
   createWindow()
 

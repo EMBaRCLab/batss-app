@@ -9,6 +9,7 @@ export type BatssRunInput = {
   // 'B' = negative primary outcome -> alternative = "less"
   primaryOutcome: 'A' | 'B'
   probability: number
+  logOdds: number
   deltaEff: number
   b: number
   N: number
@@ -17,9 +18,22 @@ export type BatssRunInput = {
   R: number
 }
 
-export type BatssRunResult = {
+export interface BatssSummaryRow {
+  Outcome: 'B Superior' | 'Inconclusive'
+  H0: number
+  H1: number
+}
+
+export interface BatssChartRow {
+  Scenario: 'H0' | 'H1'
+  Outcome: 'B Superior' | 'Inconclusive'
+  Proportion: number
+}
+
+export interface BatssRunResult {
   status: 'success' | 'error'
-  package?: string
   message?: string
-  data?: unknown
+  package?: string
+  table?: BatssSummaryRow[]
+  chart?: BatssChartRow[]
 }
