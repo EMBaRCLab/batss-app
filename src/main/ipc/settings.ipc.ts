@@ -2,8 +2,7 @@ import { ipcMain, dialog, BrowserWindow } from 'electron'
 
 import { settingsService } from '../services/settings.service'
 import { getWorkspacePath } from '../services/filesystem/app-paths'
-
-const OUTPUT_PATH_KEY = 'outputPath'
+import { OUTPUT_PATH_KEY } from '../settings.constants'
 
 export function registerSettingsIPC(): void {
   ipcMain.removeHandler('settings:getOutputPath')

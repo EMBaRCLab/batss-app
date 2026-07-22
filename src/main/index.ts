@@ -9,6 +9,7 @@ import { registerSettingsIPC } from './ipc/settings.ipc'
 import { BatssService } from './services/batss.service'
 import { settingsService } from './services/settings.service'
 import { BatssRunInput } from '../shared/batss-types'
+import { registerBatssFilesIPC } from './ipc/batss-files.ipc'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -105,6 +106,9 @@ app.whenReady().then(() => {
 
   // Settings IPC (output folder, etc.)
   registerSettingsIPC()
+
+  // Batts save load results
+  registerBatssFilesIPC()
 
   ipcMain.removeHandler('batss:example')
 

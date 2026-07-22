@@ -43,11 +43,6 @@ export const navigationItems = [
     title: 'About',
     icon: Info,
     view: 'about'
-  },
-  {
-    title: 'BATSS Test',
-    icon: FlaskConical,
-    view: 'batss'
   }
 ] as const
 

@@ -30,10 +30,21 @@ export interface BatssChartRow {
   Proportion: number
 }
 
-export interface BatssRunResult {
-  status: 'success' | 'error'
-  message?: string
-  package?: string
-  table?: BatssSummaryRow[]
-  chart?: BatssChartRow[]
+export type BatssRunResult =
+  | {
+      status: 'success'
+      package: string
+      table: BatssSummaryRow[]
+      chart: BatssChartRow[]
+    }
+  | {
+      status: 'error'
+      message: string
+    }
+
+export interface BatssSavedResult {
+  version: 1
+  createdAt: string
+  input: BatssRunInput
+  result: BatssRunResult
 }

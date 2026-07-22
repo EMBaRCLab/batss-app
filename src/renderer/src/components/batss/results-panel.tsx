@@ -1,10 +1,10 @@
 import { JSX } from 'react'
 import { Button } from '@/components/ui/button'
 import type { BatssRunResult } from '@shared/batss-types'
-import { SummaryTable } from './summary-table'
-import { BatssChart } from './results-chart'
+import { SummaryTable } from '../summary-table'
+import { BatssChart } from '../results-chart'
 
-export function Results({
+export function BatssResultsPanel({
   result,
   onClose
 }: {
@@ -20,10 +20,13 @@ export function Results({
           Close
         </Button>
       </div>
+      {result.status === 'success' && (
+        <>
+          {result.table && <SummaryTable rows={result.table} />}
 
-      {result.table && <SummaryTable rows={result.table} />}
-
-      {result.chart && <BatssChart data={result.chart} />}
+          {result.chart && <BatssChart data={result.chart} />}
+        </>
+      )}
     </div>
   )
 }

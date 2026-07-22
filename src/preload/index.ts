@@ -3,7 +3,7 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import type { RuntimeResult, RuntimeUpdate } from '../shared/runtime-types'
-import type { BatssRunInput, BatssRunResult } from '../shared/batss-types'
+import type { BatssRunInput, BatssRunResult, BatssSavedResult } from '../shared/batss-types'
 
 const api = {}
 
@@ -42,6 +42,13 @@ const runtime = {
 const batss = {
   runExample: (input: BatssRunInput): Promise<BatssRunResult> => {
     return ipcRenderer.invoke('batss:example', input)
+  },
+
+  saveResult: (data: BatssSavedResult): Promise<boolean> =>
+    ipcRenderer.invoke('batss:saveResult', data),
+
+  loadResult: (): Promise<BatssSavedResult | null> => {
+    return ipcRenderer.invoke('batss:loadResult')
   },
 
   // Streamed raw R/INLA output from a batss.glm() run, as it happens.

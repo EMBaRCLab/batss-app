@@ -13,6 +13,7 @@ import { useNavigation } from '@/stores/navigation'
 import { navigationItems } from '@/config/navigation'
 
 export function AppSidebar(): JSX.Element {
+  const currentView = useNavigation((state) => state.currentView)
   const navigate = useNavigation((state) => state.navigate)
 
   return (
@@ -23,7 +24,10 @@ export function AppSidebar(): JSX.Element {
             <SidebarMenu>
               {navigationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton onClick={() => navigate(item.view)}>
+                  <SidebarMenuButton
+                    isActive={currentView === item.view}
+                    onClick={() => navigate(item.view)}
+                  >
                     <item.icon />
                     <span>{item.title}</span>
                   </SidebarMenuButton>
