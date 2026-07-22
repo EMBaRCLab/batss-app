@@ -3,12 +3,14 @@ import { JSX, useEffect, useState } from 'react'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 
 import type { BatssRunInput } from '@shared/batss-types'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDuration } from '@/lib/utils'
 import { BatssForm } from '@/components/batss/batts-form'
 import { LogPanel } from '@/components/batss/log-panel'
 import { useBatss } from '@/stores/batss'
 import { useNavigation } from '@/stores/navigation'
+import { Button } from '@/components/ui/button'
+import { Play } from 'lucide-react'
 
 export default function Simulation(): JSX.Element {
   const navigate = useNavigation((state) => state.navigate)
@@ -70,12 +72,18 @@ export default function Simulation(): JSX.Element {
                 <CardTitle>BATSS Simulation Design</CardTitle>
               </CardHeader>
               <CardContent className="min-h-0 flex-1 overflow-hidden">
-                <BatssForm
-                  onRun={handleRun}
-                  isRunning={isRunning}
-                  elapsedSeconds={elapsedSeconds}
-                />
+                <BatssForm onRun={handleRun} />
               </CardContent>
+              <CardFooter>
+                <Button type="submit" form="batss-form" disabled={isRunning} className="w-full">
+                  <Play
+                    className={`mr-2 h-5 w-5 transition-transform ${
+                      isRunning ? 'animate-pulse scale-110' : ''
+                    }`}
+                  />
+                  {isRunning ? `Running… ${elapsedSeconds.toFixed(1)} s` : `Run Simulation`}
+                </Button>
+              </CardFooter>
             </Card>
           </div>
         </ResizablePanel>

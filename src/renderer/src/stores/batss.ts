@@ -9,7 +9,7 @@ interface BatssState {
 
   runSimulation: (input: BatssRunInput) => Promise<BatssRunResult>
   saveResults: () => Promise<void>
-  loadResults: () => Promise<void>
+  loadResults: () => Promise<boolean>
 
   setInput: (input: BatssRunInput) => void
 }
@@ -56,11 +56,13 @@ export const useBatss = create<BatssState>((set, get) => ({
   loadResults: async () => {
     const saved = await window.batss.loadResult()
 
-    if (!saved) return
+    if (!saved) return false
 
     set({
       input: saved.input,
       result: saved.result
     })
+
+    return true
   }
 }))

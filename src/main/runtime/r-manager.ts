@@ -18,10 +18,47 @@ type ExecuteResult = { stdout: string; stderr: string }
 export type OutputListener = (line: string, stream: 'stdout' | 'stderr') => void
 
 export class RManager {
-  constructor(private readonly rExecutable = 'Rscript') {}
+  private readonly rCandidates =
+    process.platform === 'darwin'
+      ? [
+          'Rscript',
+          '/Library/Frameworks/R.framework/Resources/bin/Rscript', // CRAN
+          '/opt/homebrew/bin/Rscript', // Apple Silicon Homebrew
+          '/usr/local/bin/Rscript' // Intel Homebrew
+        ]
+      : process.platform === 'win32'
+        ? [
+            'Rscript.exe' // PATH (CRAN or rig)
+          ]
+        : [
+            'Rscript', // PATH
+            '/usr/bin/Rscript',
+            '/usr/local/bin/Rscript'
+          ]
+
+  private resolvedExecutable?: string
+
+  private async getRExecutable(): Promise<string> {
+    if (this.resolvedExecutable) {
+      return this.resolvedExecutable
+    }
+
+    for (const executable of this.rCandidates) {
+      try {
+        await execFileAsync(executable, ['--version'])
+        this.resolvedExecutable = executable
+        return executable
+      } catch {
+        // Try the next candidate.
+      }
+    }
+
+    throw new Error(`Unable to locate Rscript. Tried:\n${this.rCandidates.join('\n')}`)
+  }
 
   async version(): Promise<string> {
-    const { stdout } = await execFileAsync(this.rExecutable, ['--version'])
+    const executable = await this.getRExecutable()
+    const { stdout } = await execFileAsync(executable, ['--version'])
 
     return stdout.trim()
   }
@@ -118,13 +155,14 @@ export class RManager {
   // only being available once the whole process has exited. Still
   // resolves with the full accumulated stdout/stderr for callers (like
   // getStatus/evaluate) that need to parse the complete output.
-  private runProcess(
+  private async runProcess(
     args: string[],
     env: NodeJS.ProcessEnv,
     onOutput?: OutputListener
   ): Promise<ExecuteResult> {
+    const executable = await this.getRExecutable()
     return new Promise((resolve, reject) => {
-      const child = spawn(this.rExecutable, args, { env })
+      const child = spawn(executable, args, { env })
 
       let stdoutBuffer = ''
       let stderrBuffer = ''

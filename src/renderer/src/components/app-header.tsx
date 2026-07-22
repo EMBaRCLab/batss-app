@@ -1,5 +1,5 @@
 import { JSX } from 'react'
-import { FolderOpen, Moon, Play, Save, Settings, Sun } from 'lucide-react'
+import { FolderOpen, Moon, Save, Settings, Sun } from 'lucide-react'
 
 import { SidebarTrigger } from '@/components/ui/sidebar'
 
@@ -16,11 +16,12 @@ export function AppHeader(): JSX.Element {
   const saveResults = useBatss((s) => s.saveResults)
   const loadResults = useBatss((s) => s.loadResults)
   const result = useBatss((s) => s.result)
-  const isRunning = useBatss((s) => s.isRunning)
 
   const handleLoad = async (): Promise<void> => {
-    await loadResults()
-    navigate('results')
+    const isLoaded = await loadResults()
+    if (isLoaded) {
+      navigate('results')
+    }
   }
 
   return (
@@ -32,20 +33,18 @@ export function AppHeader(): JSX.Element {
       </div>
 
       <div className="ml-auto flex items-center gap-2">
-        <Button variant="outline" size="sm" onClick={handleLoad}>
+        <Button variant="ghost" size="sm" onClick={handleLoad}>
           <FolderOpen />
           Load
         </Button>
 
-        <Button variant="destructive" size="sm" onClick={saveResults} disabled={!result}>
-          <Save />
-          Save
-        </Button>
+        {result && (
+          <Button variant="destructive" size="sm" onClick={saveResults} disabled={!result}>
+            <Save />
+            Save
+          </Button>
+        )}
 
-        <Button size="sm" disabled={isRunning}>
-          <Play />
-          Run Simulation
-        </Button>
         <Button
           variant="ghost"
           size="icon"
