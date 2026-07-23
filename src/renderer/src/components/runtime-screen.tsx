@@ -1,5 +1,3 @@
-// src/renderer/src/pages/runtime-screen.tsx
-
 import { JSX, useEffect, useRef } from 'react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -21,12 +19,6 @@ export function RuntimeScreen(): JSX.Element {
 
   const logs = useRuntime((state) => state.logs)
 
-  // Ref goes on a plain wrapping div, not on ScrollArea directly, so
-  // ref-forwarding quirks in the generated component can't break this.
-  // The actual scrollable element is the Viewport nested inside — this
-  // project's scroll-area.tsx wraps Base UI (@base-ui/react/scroll-area),
-  // NOT Radix, so it's tagged data-slot="scroll-area-viewport", not
-  // Radix's data-radix-scroll-area-viewport.
   const scrollRootRef = useRef<HTMLDivElement>(null)
 
   const isChecking = status === 'checking'

@@ -11,8 +11,8 @@ import {
 
 import { useBatss } from '@/stores/batss'
 import { Button } from '@/components/ui/button'
-import { BatssChart } from '@/components/results-chart'
-import { SummaryTable } from '@/components/summary-table'
+import { BatssChart } from '@/components/results/bar-chart'
+import { SummaryTable } from '@/components/results/summary-table'
 
 export default function Results(): JSX.Element {
   const input = useBatss((state) => state.input)
@@ -51,6 +51,8 @@ export default function Results(): JSX.Element {
     )
   }
 
+  const version = result.package ? `BATSS v${result.package}` : 'BATSS'
+
   return (
     <div className="h-full min-h-0 overflow-auto p-6">
       <div className="flex flex-col gap-6">
@@ -60,7 +62,7 @@ export default function Results(): JSX.Element {
             <p className="text-muted-foreground">Posterior summaries, diagnostics, and plots.</p>
           </div>
 
-          <Badge variant="secondary">{result.package ?? 'BATSS'}</Badge>
+          <Badge variant="secondary">{version}</Badge>
         </div>
 
         {input && (

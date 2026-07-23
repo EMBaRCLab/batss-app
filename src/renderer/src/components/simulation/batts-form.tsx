@@ -4,9 +4,9 @@ import type { SubmitHandler } from '@formisch/react'
 
 import type { BatssRunInput } from '@shared/batss-types'
 
-import { StudyDesignSection } from '@/components/batss/study-design-section'
-import { DecisionRuleSection } from '@/components/batss/decision-rule-section'
-import { SimulationSettingsSection } from '@/components/batss/simulation-settings-section'
+import { StudyDesignSection } from '@/components/simulation/study-design-section'
+import { DecisionRuleSection } from '@/components/simulation/decision-rule-section'
+import { SimulationSettingsSection } from '@/components/simulation/simulation-settings-section'
 import { designSchema, initialDesignInput } from '@/lib/schema'
 
 type BatssFormProps = {
