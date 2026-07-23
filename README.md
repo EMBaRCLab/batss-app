@@ -1,6 +1,15 @@
-# albatross
+# Albatross
 
-An Electron application with React and TypeScript
+A desktop application facilitating Adaptive Bayesian Clinical (ABC) Trial Design using Integrated Nested Laplace Approximations (INLA): ABC-INLA
+
+![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
+![Docker](https://img.shields.io/badge/docker-supported-blue.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-green.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Latest Release](https://img.shields.io/github/v/release/SK-EMBaRCLab/batss-app)](https://github.com/SK-EMBaRCLab/batss-app/releases/latest)
+
+**[⬇ Download the latest release](https://github.com/SK-EMBaRCLab/batss-app/releases/latest)**
+
+---
 
 ## Recommended IDE Setup
 
@@ -11,13 +20,13 @@ An Electron application with React and TypeScript
 ### Install
 
 ```bash
-$ npm install
+npm install
 ```
 
 ### Development
 
 ```bash
-$ npm run dev
+npm run dev
 ```
 
 ### Build

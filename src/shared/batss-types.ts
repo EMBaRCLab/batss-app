@@ -1,9 +1,3 @@
-// src/shared/batss-types.ts
-//
-// Shared between the renderer (BatssTest form) and main (BatssService),
-// same reasoning as runtime-types.ts: one definition, not two that can
-// silently drift apart.
-
 export type BatssRunInput = {
   // 'A' = positive primary outcome -> alternative = "greater"
   // 'B' = negative primary outcome -> alternative = "less"
