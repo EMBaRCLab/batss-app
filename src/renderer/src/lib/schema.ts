@@ -28,10 +28,9 @@ export const designSchema = v.object({
 
   logOdds: requiredNumber('logOdds'),
 
-  decisionRule: v.object({
-    deltaEff: requiredNumber('Delta efficiency'),
-    b: requiredNumber('b')
-  }),
+  deltaEff: requiredNumber('Delta efficiency'),
+
+  b: requiredNumber('b'),
 
   N: v.pipe(requiredNumber('Maximum sample size'), v.integer(), v.minValue(1), v.maxValue(1000)),
 
@@ -46,12 +45,8 @@ export const initialDesignInput = {
   primaryOutcome: 'A',
   probability: 0.1,
   logOdds: 0.2,
-
-  decisionRule: {
-    deltaEff: 0.05,
-    b: 0.2
-  },
-
+  deltaEff: 0.05,
+  b: 0.2,
   N: 216,
   m0: 60,
   m: 12,

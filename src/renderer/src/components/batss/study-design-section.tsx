@@ -1,5 +1,5 @@
 import { JSX } from 'react'
-import { Field as FormischField, getInput } from '@formisch/react'
+import { Field as FormischField, useField } from '@formisch/react'
 import {
   Field as ShadcnField,
   FieldLabel,
@@ -30,16 +30,16 @@ const primaryOutcomes = [
 ]
 
 export function StudyDesignSection({ form }: { form: BatssFormStore }): JSX.Element {
-  const outcome = getInput(form, { path: ['primaryOutcome'] }) as string | undefined
-  const probability = getInput(form, { path: ['probability'] }) as number | undefined
-  const logOdds = getInput(form, { path: ['logOdds'] }) as number | undefined
+  const outcome = useField(form, { path: ['primaryOutcome'] })
+  const probability = useField(form, { path: ['probability'] })
+  const logOdds = useField(form, { path: ['logOdds'] })
 
-  const selectedOutcome = primaryOutcomes.find((out) => out.id === outcome)
+  const selectedOutcome = primaryOutcomes.find((out) => out.id === outcome.input)
   return (
     <FormSection
       title="Study Design"
       description="Define the primary outcome and treatment assumptions."
-      summary={`${selectedOutcome?.title ?? '—'} · probability ${probability ?? '—'} · logOdds ${logOdds ?? '—'}`}
+      summary={`${selectedOutcome?.title ?? '—'} · probability ${probability.input ?? '—'} · logOdds ${logOdds.input ?? '—'}`}
     >
       <FormischField of={form} path={['primaryOutcome']}>
         {(field) => (

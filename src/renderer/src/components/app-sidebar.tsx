@@ -4,6 +4,7 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem
@@ -11,13 +12,30 @@ import {
 
 import { useNavigation } from '@/stores/navigation'
 import { navigationItems } from '@/config/navigation'
+import { GalleryVerticalEnd } from 'lucide-react'
 
 export function AppSidebar(): JSX.Element {
   const currentView = useNavigation((state) => state.currentView)
   const navigate = useNavigation((state) => state.navigate)
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" variant="floating">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" tooltip="Albatross">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <GalleryVerticalEnd className="size-4" />
+              </div>
+
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-extrabold font-mono uppercase">Albatross</span>
+                <span className="truncate text-xs font-extralight">ABC-INLA</span>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -25,6 +43,7 @@ export function AppSidebar(): JSX.Element {
               {navigationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
+                    tooltip={item.title}
                     isActive={currentView === item.view}
                     onClick={() => navigate(item.view)}
                   >

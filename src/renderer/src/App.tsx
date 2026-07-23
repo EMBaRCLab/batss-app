@@ -1,4 +1,5 @@
 import { JSX, useEffect } from 'react'
+import { motion, AnimatePresence } from 'motion/react'
 
 import { AppLayout } from '@/layouts/app-layout'
 import { views } from '@/config/views'
@@ -29,5 +30,20 @@ export default function App(): JSX.Element {
     return <RuntimeScreen />
   }
 
-  return <AppLayout>{views[currentView]}</AppLayout>
+  return (
+    <AppLayout>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentView}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.12 }}
+          className="flex h-full min-h-0 flex-1 flex-col"
+        >
+          {views[currentView]}
+        </motion.div>
+      </AnimatePresence>
+    </AppLayout>
+  )
 }

@@ -14,11 +14,11 @@ import type { JSX } from 'react'
 const chartConfig = {
   superior: {
     label: 'B Superior',
-    color: 'var(--chart-3)'
+    color: 'var(--chart-2)'
   },
   inconclusive: {
     label: 'Inconclusive',
-    color: 'var(--muted-foreground)'
+    color: 'oklch(0.62 0 0)'
   }
 } satisfies ChartConfig
 
@@ -60,7 +60,8 @@ export function BatssChart({ data }: { data: BatssChartRow[] }): JSX.Element {
         <ReferenceLine
           y={0.05}
           stroke="var(--destructive)"
-          strokeDasharray="4 4"
+          strokeWidth={2}
+          strokeDasharray="6 3"
           label={{
             value: 'Type I Error Target (5%)',
             position: 'insideTopRight',
@@ -71,12 +72,13 @@ export function BatssChart({ data }: { data: BatssChartRow[] }): JSX.Element {
 
         <ReferenceLine
           y={0.8}
-          stroke="var(--secondary)"
-          strokeDasharray="4 4"
+          stroke="var(--chart-3)"
+          strokeWidth={2}
+          strokeDasharray="6 3"
           label={{
             value: 'Power Target (80%)',
             position: 'insideTopRight',
-            fill: 'var(--secondary)',
+            fill: 'var(--chart-3)',
             fontSize: 12
           }}
         />
