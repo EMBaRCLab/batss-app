@@ -1,5 +1,10 @@
 # Albatross
 
+![Status](https://img.shields.io/badge/status-early%20alpha-red)
+
+> [!WARNING]
+> Albatross is in **early alpha**. Features are under active development, and the application may contain bugs or undergo significant changes. Feedback and issue reports are welcome.
+
 A desktop application facilitating Adaptive Bayesian Clinical (ABC) Trial Design using Integrated Nested Laplace Approximations (INLA): ABC-INLA
 
 ![Electron](https://img.shields.io/badge/Electron-47848F.svg?logo=electron&logoColor=white)
@@ -60,7 +65,7 @@ TODO
 - Node.js 22.x or later (or the current Active LTS version you support)
 - npm
 - [R](https://www.r-project.org/) (required for BATSS; detected automatically)
-- On Linux: `python3-tk`, `libgl1`, `libglib2.0-0`
+- On Linux: check docker file
 R packages (`BATSS` and dependencies) are installed automatically on first launch.
 
 ---
