@@ -2,7 +2,8 @@
 
 A desktop application facilitating Adaptive Bayesian Clinical (ABC) Trial Design using Integrated Nested Laplace Approximations (INLA): ABC-INLA
 
-![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
+![Electron](https://img.shields.io/badge/Electron-28.3A?logo=electron&logoColor=white)
+![R](https://img.shields.io/badge/R-276DC3?logo=r&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-supported-blue.svg)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-green.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Latest Release](https://img.shields.io/github/v/release/SK-EMBaRCLab/batss-app)](https://github.com/SK-EMBaRCLab/batss-app/releases/latest)
